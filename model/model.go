@@ -17,3 +17,9 @@ type DbColumn struct {
 	Domain    string
 	Activate  string
 }
+
+type AddOndStore struct {
+	StoreName string `json:"storeName"`
+	PlanCode  string `json:"planCode"`
+	Domain    string `json:"domain"`
+}

@@ -20,5 +20,7 @@ func init() {
 }
 func main() {
 	fmt.Println("Im' ready to start!")
+	//database.Mysql().AddStore()
 	routers.Route()
+
 }
