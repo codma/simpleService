@@ -10,15 +10,7 @@ type Store struct {
 	Activate  string `json:"activate"`
 }
 
-type DbColumn struct {
-	StoreId   int
-	StoreName string
-	PlanCode  string
-	Domain    string
-	Activate  string
-}
-
-type AddOndStore struct {
+type AddOneStore struct {
 	StoreName string `json:"storeName"`
 	PlanCode  string `json:"planCode"`
 	Domain    string `json:"domain"`
