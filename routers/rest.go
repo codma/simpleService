@@ -24,13 +24,26 @@ func GetStoreList(c *gin.Context) {
 }
 
 func AddStore(c *gin.Context) {
-	c.IndentedJSON(http.StatusCreated, database.Mysql().AddStore(c))
+	data, err := database.Mysql().AddStore(c)
+	if err != nil {
+		panic(err)
+	}
+	c.IndentedJSON(http.StatusCreated, data)
 }
 
 func UpdateDomain(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, database.Mysql().UpdateDomain(c))
+	data, err := database.Mysql().UpdateDomain(c)
+	if err != nil {
+		panic(err)
+	}
+	c.IndentedJSON(http.StatusOK, data)
 }
 
 func DeleteStore(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, database.Mysql().DeleteStore(c))
+	data, err := database.Mysql().DeleteStore(c)
+	if err != nil {
+		panic(err)
+	}
+	c.IndentedJSON(http.StatusOK, data)
+
 }
