@@ -52,6 +52,7 @@ func (d *Database) AddStore(c *gin.Context) (bool, error) {
 		return false, err
 	}
 
+	//확인용
 	rowCount, err := res.RowsAffected()
 	fmt.Printf("Inserted %d row(s) of data.\n", rowCount)
 
@@ -73,6 +74,7 @@ func (d *Database) UpdateDomain(c *gin.Context) (bool, error) {
 		return false, err
 	}
 
+	//확인용
 	rowCount, err := rows.RowsAffected()
 	fmt.Printf("Updated %d row(s) of data.\n", rowCount)
 	fmt.Println("Done.")
@@ -95,6 +97,7 @@ func (d *Database) DeleteStore(c *gin.Context) (bool, error) {
 		return false, err
 	}
 
+	//확인용
 	rowCount, err := rows.RowsAffected()
 	fmt.Printf("Deleted %d row(s) of data.\n", rowCount)
 	fmt.Println("Done.")

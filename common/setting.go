@@ -9,6 +9,7 @@ import (
 //셋팅
 const (
 	MYSQL_CONNECTION = "database.connection_string"
+	PORT             = "server.port"
 )
 
 func Setting() error {
