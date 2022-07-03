@@ -14,18 +14,14 @@ type Database struct {
 	db *sql.DB
 }
 
-func checkError(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
-
 //DB연결
 func Mysql() *Database {
 
 	db, err := sql.Open("mysql", viper.GetString(common.MYSQL_CONNECTION))
 	fmt.Println(viper.GetString(common.MYSQL_CONNECTION))
-	checkError(err)
+	if err != nil {
+		panic(err)
+	}
 
 	fmt.Println("Database connetion success", db)
 	//defer db.Close()

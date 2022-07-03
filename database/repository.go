@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"log"
 	"simpleService/model"
 
 	"github.com/gin-gonic/gin"
@@ -13,19 +14,25 @@ func (d *Database) FindStoreList() []model.Store {
 	var result model.Store
 
 	//쿼리작성
-	rows, err := d.db.Query("SELECT storeId, storeName, planCode, domain, activate from stores;")
-	checkError(err)
+	rows, err := d.db.Query("SELECT storeId, storeName, planCode, domain, activate from store;")
+	if err != nil {
+		log.Println(err)
+	}
 	defer rows.Close()
 
 	fmt.Println("Reading data:")
 	for rows.Next() {
 		err := rows.Scan(&result.StoreId, &result.StoreName, &result.PlanCode, &result.Domain, &result.Activate)
-		checkError(err)
+		if err != nil {
+			log.Println(err)
+		}
 		results = append(results, model.Store(result))
 	}
 
 	err = rows.Err()
-	checkError(err)
+	if err != nil {
+		log.Println(err)
+	}
 	fmt.Println("Done.")
 
 	defer d.db.Close()
@@ -42,7 +49,7 @@ func (d *Database) AddStore(c *gin.Context) (bool, error) {
 		return false, err
 	}
 
-	addOne, err := d.db.Prepare("INSERT INTO stores (storeName, planCode, domain) VALUES (?, ?, ?);")
+	addOne, err := d.db.Prepare("INSERT INTO store (storeName, planCode, domain) VALUES (?, ?, ?);")
 	if err != nil {
 		return false, err
 	}
@@ -69,7 +76,7 @@ func (d *Database) UpdateDomain(c *gin.Context) (bool, error) {
 	}
 
 	// Modify some data in table.
-	rows, err := d.db.Exec("UPDATE stores SET domain = ? WHERE storeName = ?", storeInfo.Domain, storeInfo.StoreName)
+	rows, err := d.db.Exec("UPDATE store SET domain = ? WHERE storeName = ?", storeInfo.Domain, storeInfo.StoreName)
 	if err != nil {
 		return false, err
 	}
@@ -92,7 +99,7 @@ func (d *Database) DeleteStore(c *gin.Context) (bool, error) {
 	}
 
 	// Modify some data in table.
-	rows, err := d.db.Exec("DELETE FROM stores WHERE StoreName = ?", storeInfo.StoreName)
+	rows, err := d.db.Exec("DELETE FROM store WHERE StoreName = ?", storeInfo.StoreName)
 	if err != nil {
 		return false, err
 	}
