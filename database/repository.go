@@ -41,13 +41,7 @@ func FindStoreList() []model.Store {
 }
 
 //스토어 추가
-func AddStore(c *gin.Context) (bool, error) {
-
-	storeInfo := &model.AddOneStore{}
-	err := c.BindJSON(storeInfo)
-	if err != nil {
-		return false, err
-	}
+func AddStore(storeInfo model.AddOneStore) (bool, error) {
 
 	addOne, err := Db.Prepare("INSERT INTO store (storeName, planCode, domain) VALUES (?, ?, ?);")
 	if err != nil {

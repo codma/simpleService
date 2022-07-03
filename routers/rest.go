@@ -1,9 +1,12 @@
 package routers
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"net/http"
 	"simpleService/common"
 	"simpleService/database"
+	"simpleService/model"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -28,11 +31,22 @@ func GetStoreList(c *gin.Context) {
 }
 
 func AddStore(c *gin.Context) {
-	data, err := database.AddStore(c)
+
+	var storeInfo model.AddOneStore
+
+	data, _ := ioutil.ReadAll(c.Request.Body)
+	err := json.Unmarshal(data, &storeInfo)
 	if err != nil {
-		panic(err)
+		c.IndentedJSON(http.StatusBadRequest, err)
+		return
 	}
-	c.IndentedJSON(http.StatusCreated, data)
+
+	result, err := database.AddStore(storeInfo)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err)
+		return
+	}
+	c.IndentedJSON(http.StatusCreated, result)
 }
 
 func UpdateDomain(c *gin.Context) {
