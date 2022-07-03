@@ -2,40 +2,32 @@ package database
 
 import (
 	"fmt"
-	"log"
 	"simpleService/model"
 )
 
 //스토어 목록 조회
-func FindStoreList() []model.Store {
+func FindStoreList() (any, error) {
 	var results []model.Store
 	var result model.Store
 
 	//쿼리작성
 	rows, err := Db.Query("SELECT storeId, storeName, planCode, domain, activate from store;")
 	if err != nil {
-		log.Println(err)
+		return "쿼리 실행 실패", err
 	}
 	defer rows.Close()
 
-	fmt.Println("Reading data:")
 	for rows.Next() {
 		err := rows.Scan(&result.StoreId, &result.StoreName, &result.PlanCode, &result.Domain, &result.Activate)
 		if err != nil {
-			log.Println(err)
+			return "데이터 읽기 실패", err
 		}
 		results = append(results, model.Store(result))
 	}
 
-	err = rows.Err()
-	if err != nil {
-		log.Println(err)
-	}
-	fmt.Println("Done.")
-
 	defer Db.Close()
 
-	return results
+	return results, nil
 }
 
 //스토어 추가

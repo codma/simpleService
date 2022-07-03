@@ -27,7 +27,12 @@ func Route() {
 }
 
 func GetStoreList(c *gin.Context) {
-	c.JSON(200, database.FindStoreList())
+	result, err := database.FindStoreList()
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err)
+		return
+	}
+	c.JSON(200, result)
 }
 
 func AddStore(c *gin.Context) {
