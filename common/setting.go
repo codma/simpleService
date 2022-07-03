@@ -10,6 +10,8 @@ import (
 const (
 	MYSQL_CONNECTION = "database.connection_string"
 	PORT             = "server.port"
+	MONGO_DB_URI     = "database.mongo_connection_string"
+	MONGO_DB_NAME    = "database.mongo_db_name"
 )
 
 func Setting() error {
