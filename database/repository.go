@@ -9,12 +9,12 @@ import (
 )
 
 //스토어 목록 조회
-func (d *Database) FindStoreList() []model.Store {
+func FindStoreList() []model.Store {
 	var results []model.Store
 	var result model.Store
 
 	//쿼리작성
-	rows, err := d.db.Query("SELECT storeId, storeName, planCode, domain, activate from store;")
+	rows, err := Db.Query("SELECT storeId, storeName, planCode, domain, activate from store;")
 	if err != nil {
 		log.Println(err)
 	}
@@ -35,13 +35,13 @@ func (d *Database) FindStoreList() []model.Store {
 	}
 	fmt.Println("Done.")
 
-	defer d.db.Close()
+	defer Db.Close()
 
 	return results
 }
 
 //스토어 추가
-func (d *Database) AddStore(c *gin.Context) (bool, error) {
+func AddStore(c *gin.Context) (bool, error) {
 
 	storeInfo := &model.AddOneStore{}
 	err := c.BindJSON(storeInfo)
@@ -49,7 +49,7 @@ func (d *Database) AddStore(c *gin.Context) (bool, error) {
 		return false, err
 	}
 
-	addOne, err := d.db.Prepare("INSERT INTO store (storeName, planCode, domain) VALUES (?, ?, ?);")
+	addOne, err := Db.Prepare("INSERT INTO store (storeName, planCode, domain) VALUES (?, ?, ?);")
 	if err != nil {
 		return false, err
 	}
@@ -67,7 +67,7 @@ func (d *Database) AddStore(c *gin.Context) (bool, error) {
 }
 
 //스토어 도메인 변경
-func (d *Database) UpdateDomain(c *gin.Context) (bool, error) {
+func UpdateDomain(c *gin.Context) (bool, error) {
 	//storeName에 해당하는 도메인주소를 업데이트 한다.
 	storeInfo := &model.AddOneStore{}
 	err := c.BindJSON(storeInfo)
@@ -76,7 +76,7 @@ func (d *Database) UpdateDomain(c *gin.Context) (bool, error) {
 	}
 
 	// Modify some data in table.
-	rows, err := d.db.Exec("UPDATE store SET domain = ? WHERE storeName = ?", storeInfo.Domain, storeInfo.StoreName)
+	rows, err := Db.Exec("UPDATE store SET domain = ? WHERE storeName = ?", storeInfo.Domain, storeInfo.StoreName)
 	if err != nil {
 		return false, err
 	}
@@ -90,7 +90,7 @@ func (d *Database) UpdateDomain(c *gin.Context) (bool, error) {
 }
 
 //스토어 삭제
-func (d *Database) DeleteStore(c *gin.Context) (bool, error) {
+func DeleteStore(c *gin.Context) (bool, error) {
 	//storeName에 해당하는 열을 삭제한다.
 	storeInfo := &model.AddOneStore{}
 	err := c.BindJSON(storeInfo)
@@ -99,7 +99,7 @@ func (d *Database) DeleteStore(c *gin.Context) (bool, error) {
 	}
 
 	// Modify some data in table.
-	rows, err := d.db.Exec("DELETE FROM store WHERE StoreName = ?", storeInfo.StoreName)
+	rows, err := Db.Exec("DELETE FROM store WHERE StoreName = ?", storeInfo.StoreName)
 	if err != nil {
 		return false, err
 	}

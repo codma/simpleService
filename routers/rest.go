@@ -24,11 +24,11 @@ func Route() {
 }
 
 func GetStoreList(c *gin.Context) {
-	c.JSON(200, database.Mysql().FindStoreList())
+	c.JSON(200, database.FindStoreList())
 }
 
 func AddStore(c *gin.Context) {
-	data, err := database.Mysql().AddStore(c)
+	data, err := database.AddStore(c)
 	if err != nil {
 		panic(err)
 	}
@@ -36,7 +36,7 @@ func AddStore(c *gin.Context) {
 }
 
 func UpdateDomain(c *gin.Context) {
-	data, err := database.Mysql().UpdateDomain(c)
+	data, err := database.UpdateDomain(c)
 	if err != nil {
 		panic(err)
 	}
@@ -44,7 +44,7 @@ func UpdateDomain(c *gin.Context) {
 }
 
 func DeleteStore(c *gin.Context) {
-	data, err := database.Mysql().DeleteStore(c)
+	data, err := database.DeleteStore(c)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err)
 		return
