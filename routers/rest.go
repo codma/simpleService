@@ -68,11 +68,18 @@ func UpdateDomain(c *gin.Context) {
 }
 
 func DeleteStore(c *gin.Context) {
-	data, err := database.DeleteStore(c)
+	var storeInfo model.StoreRequest
+	err := c.BindJSON(storeInfo)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, err)
 		return
 	}
-	c.IndentedJSON(http.StatusOK, data)
+
+	data, err := database.DeleteStore(storeInfo)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err)
+		return
+	}
+	c.IndentedJSON(http.StatusNoContent, data)
 
 }

@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"log"
 	"simpleService/model"
-
-	"github.com/gin-gonic/gin"
 )
 
 //스토어 목록 조회
@@ -61,41 +59,25 @@ func AddStore(storeInfo model.StoreRequest) (bool, error) {
 }
 
 //스토어 도메인 변경
-func UpdateDomain(storeInfo model.StoreRequest) (bool, error) {
+func UpdateDomain(storeInfo model.StoreRequest) (string, error) {
 	//storeName에 해당하는 도메인주소를 업데이트 한다.
 
-	rows, err := Db.Exec("UPDATE store SET domain = ? WHERE storeName = ?", storeInfo.Domain, storeInfo.StoreName)
+	_, err := Db.Exec("UPDATE store SET domain = ? WHERE storeName = ?", storeInfo.Domain, storeInfo.StoreName)
 	if err != nil {
-		return false, err
+		return "업데이트 실패", err
 	}
 
-	//확인용
-	rowCount, err := rows.RowsAffected()
-	fmt.Printf("Updated %d row(s) of data.\n", rowCount)
-	fmt.Println("Done.")
-
-	return true, err
+	return "업데이트 성공", err
 }
 
 //스토어 삭제
-func DeleteStore(c *gin.Context) (bool, error) {
+func DeleteStore(storeInfo model.StoreRequest) (string, error) {
 	//storeName에 해당하는 열을 삭제한다.
-	storeInfo := &model.StoreRequest{}
-	err := c.BindJSON(storeInfo)
+
+	_, err := Db.Exec("DELETE FROM store WHERE StoreName = ?", storeInfo.StoreName)
 	if err != nil {
-		return false, err
+		return "삭제 실패", err
 	}
 
-	// Modify some data in table.
-	rows, err := Db.Exec("DELETE FROM store WHERE StoreName = ?", storeInfo.StoreName)
-	if err != nil {
-		return false, err
-	}
-
-	//확인용
-	rowCount, err := rows.RowsAffected()
-	fmt.Printf("Deleted %d row(s) of data.\n", rowCount)
-	fmt.Println("Done.")
-
-	return true, err
+	return "삭제 성공", err
 }
