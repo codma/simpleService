@@ -15,7 +15,7 @@ func Route() {
 	router := gin.Default()
 	router.GET("/stores", GetStoreList)
 	router.POST("/stores", AddStore)
-	router.PUT("/stores/change_domain", UpdateDomain)
+	router.PUT("/stores", UpdateDomain)
 	router.DELETE("/stores", DeleteStore)
 
 	port := viper.GetString(common.PORT)
