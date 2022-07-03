@@ -41,7 +41,7 @@ func FindStoreList() []model.Store {
 }
 
 //스토어 추가
-func AddStore(storeInfo model.AddOneStore) (bool, error) {
+func AddStore(storeInfo model.StoreRequest) (bool, error) {
 
 	addOne, err := Db.Prepare("INSERT INTO store (storeName, planCode, domain) VALUES (?, ?, ?);")
 	if err != nil {
@@ -61,15 +61,9 @@ func AddStore(storeInfo model.AddOneStore) (bool, error) {
 }
 
 //스토어 도메인 변경
-func UpdateDomain(c *gin.Context) (bool, error) {
+func UpdateDomain(storeInfo model.StoreRequest) (bool, error) {
 	//storeName에 해당하는 도메인주소를 업데이트 한다.
-	storeInfo := &model.AddOneStore{}
-	err := c.BindJSON(storeInfo)
-	if err != nil {
-		return false, err
-	}
 
-	// Modify some data in table.
 	rows, err := Db.Exec("UPDATE store SET domain = ? WHERE storeName = ?", storeInfo.Domain, storeInfo.StoreName)
 	if err != nil {
 		return false, err
@@ -86,7 +80,7 @@ func UpdateDomain(c *gin.Context) (bool, error) {
 //스토어 삭제
 func DeleteStore(c *gin.Context) (bool, error) {
 	//storeName에 해당하는 열을 삭제한다.
-	storeInfo := &model.AddOneStore{}
+	storeInfo := &model.StoreRequest{}
 	err := c.BindJSON(storeInfo)
 	if err != nil {
 		return false, err

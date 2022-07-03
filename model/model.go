@@ -10,7 +10,7 @@ type Store struct {
 	Activate  string `json:"activate"`
 }
 
-type AddOneStore struct {
+type StoreRequest struct {
 	StoreName string `json:"storeName"`
 	PlanCode  string `json:"planCode"`
 	Domain    string `json:"domain"`

@@ -32,7 +32,7 @@ func GetStoreList(c *gin.Context) {
 
 func AddStore(c *gin.Context) {
 
-	var storeInfo model.AddOneStore
+	var storeInfo model.StoreRequest
 
 	data, _ := ioutil.ReadAll(c.Request.Body)
 	err := json.Unmarshal(data, &storeInfo)
@@ -50,11 +50,21 @@ func AddStore(c *gin.Context) {
 }
 
 func UpdateDomain(c *gin.Context) {
-	data, err := database.UpdateDomain(c)
+	var storeInfo model.StoreRequest
+
+	data, _ := ioutil.ReadAll(c.Request.Body)
+	err := json.Unmarshal(data, &storeInfo)
 	if err != nil {
-		panic(err)
+		c.IndentedJSON(http.StatusBadRequest, err)
+		return
 	}
-	c.IndentedJSON(http.StatusOK, data)
+
+	result, err := database.UpdateDomain(storeInfo)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, err)
+		return
+	}
+	c.IndentedJSON(http.StatusOK, result)
 }
 
 func DeleteStore(c *gin.Context) {
